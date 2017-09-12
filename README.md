@@ -1,4 +1,4 @@
-# Lagom JDBI Persistence
+# Lagom JDBI3 Persistence
 
 Love Lagom? Love JDBI? This project provides a couple of helpers to work with
 JDBI on a Lagom project.
