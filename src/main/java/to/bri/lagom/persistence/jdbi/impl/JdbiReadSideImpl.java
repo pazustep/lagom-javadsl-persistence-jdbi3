@@ -105,15 +105,14 @@ public class JdbiReadSideImpl implements JdbiReadSide {
 
         @Override
         public CompletionStage<Done> globalPrepare() {
-            return session.useHandle(globalPrepareCallback);
+            CompletionStage<Done> tablesStage = FutureConverters.toJava(slickProvider.ensureTablesCreated());
+            return tablesStage.thenCompose(done -> session.useHandle(globalPrepareCallback));
         }
 
         @Override
         public CompletionStage<Offset> prepare(AggregateEventTag<Event> tag) {
-            CompletionStage<Done> tablesStage = FutureConverters.toJava(slickProvider.ensureTablesCreated());
-
-            CompletionStage<Done> prepareStage = tablesStage.thenCompose(done ->
-                session.useHandle(handle -> prepareCallback.accept(handle, tag)));
+            CompletionStage<Done> prepareStage = session.useHandle(handle ->
+                prepareCallback.accept(handle, tag));
 
             CompletionStage<OffsetDao> daoStage = prepareStage.thenCompose(done -> {
                 Future<OffsetDao> future = offsetStore.prepare(readSideId, tag.tag());

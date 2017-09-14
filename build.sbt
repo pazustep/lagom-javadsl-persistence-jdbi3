@@ -2,7 +2,7 @@ name in ThisBuild := "lagom-javadsl-persistence-jdbi3"
 
 organization in ThisBuild := "to.bri"
 
-version in ThisBuild := "0.1.2"
+version in ThisBuild := "0.1.3"
 
 scalaVersion in ThisBuild := "2.11.8"
 
